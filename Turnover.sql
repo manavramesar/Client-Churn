@@ -79,7 +79,7 @@ JOIN (
 ) AS ccr_churned
 ON ccr.Geography = ccr_churned.Geography;
 
--- Do More People Drop Off When They Have More Products? --
+-- Do More People Drop Off When They Have Less Products? --
 
 SELECT no_of_products, 	COUNT(no_longer_a_customer) AS "Number Of People That Have Left"
 FROM customer_churn_records
