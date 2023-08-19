@@ -131,8 +131,7 @@ SELECT ROUND(AVG(estimated_salary),2) AS "estimated salary",
          WHEN Age BETWEEN 61 AND 100 THEN '61-100'
        END AS age_group
 FROM customer_churn_records
-WHERE card_type IN ("Diamond", "Gold", "Silver", "Platinum")
- AND Age BETWEEN 18 AND 100
+WHERE Age BETWEEN 18 AND 100
 GROUP BY age_group;
 
 -- No of Male And Female Customers --
