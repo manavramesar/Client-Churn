@@ -1,18 +1,18 @@
 -- No of clients in each country -- 
 
-SELECT Geography, COUNT(*) AS "Number Of Clients In Each Country"
+SELECT Geography, COUNT(*) AS number_of_clients_in_each_country
 FROM customer_churn_records 
 GROUP BY Geography;
 
 -- Which country has the highest AVG credit score --
 
-SELECT Geography, ROUND(AVG(credit_score),2) AS "Average Credit Score"
+SELECT Geography, ROUND(AVG(credit_score),2) AS average_credit_score
 FROM customer_churn_records
 GROUP BY Geography; 
 
 -- Do men or women have higher AVG credit scores? --
 
-SELECT Gender, ROUND(AVG(credit_score),2) AS "Average Credit Score"
+SELECT Gender, ROUND(AVG(credit_score),2) AS average_credit_score"
 FROM customer_churn_records
 GROUP BY Gender; 
 
@@ -65,23 +65,23 @@ GROUP BY card_type, age_group;
 
 -- Which Country Has A Higher Churn Rate? --
 
-SELECT ccr.Geography, ccr_churned.churn_count, ccr.total_count, (ccr_churned.churn_count / ccr.total_count)* 100 AS churn_rate
+SELECT a.Geography, b.churn_count, a..total_count, (b.churn_count / a.total_count)* 100 AS churn_rate
 FROM (
     SELECT Geography, COUNT(*) AS total_count
     FROM customer_churn_records
     GROUP BY Geography
-) AS ccr
+) AS a
 JOIN (
     SELECT Geography, COUNT(*) AS churn_count
     FROM customer_churn_records
     WHERE active_member = 'No'
     GROUP BY Geography
-) AS ccr_churned
-ON ccr.Geography = ccr_churned.Geography;
+) AS b
+ON a.Geography = b.Geography;
 
 -- Do More People Drop Off When They Have Less Products? --
 
-SELECT no_of_products, 	COUNT(no_longer_a_customer) AS "Number Of People That Have Left"
+SELECT no_of_products, COUNT(no_longer_a_customer) AS Number_of_people_that_have_left
 FROM customer_churn_records
 GROUP BY no_of_products, no_longer_a_customer
 HAVING no_longer_a_customer = "Yes"
@@ -89,7 +89,7 @@ ORDER BY COUNT(no_longer_a_customer);
 
 -- Which Card Type Sees The Most Drop Off? --
 
-SELECT card_type, COUNT(no_longer_a_customer) AS "clients_leaving"
+SELECT card_type, COUNT(no_longer_a_customer) AS clients_leaving
 FROM customer_churn_records
 GROUP BY card_type, no_longer_a_customer
 HAVING no_longer_a_customer = "Yes"
@@ -97,13 +97,13 @@ ORDER BY COUNT(no_longer_a_customer);
 
 -- How Many People Have Lodged Complaints For Each Card Type?--
 
-SELECT card_type, COUNT(Complain) AS "complaints"
+SELECT card_type, COUNT(Complain) AS complaints
 FROM customer_churn_records
 GROUP BY card_type;
 
 -- Which Gender Has  A Higher Average Salary? --
 
-SELECT Gender, ROUND(AVG(estimated_salary),2) AS "Average Estimated Salary"
+SELECT Gender, ROUND(AVG(estimated_salary),2) AS Average Estimated Salary
 FROM customer_churn_records
 GROUP BY Gender;
 
@@ -122,9 +122,9 @@ WHERE no_longer_a_customer = "Yes"
 GROUP BY Tenure
 ORDER BY Tenure;
 
--- Average Estiamted Salary In Each Age Group --
+-- Average Estimated Salary In Each Age Group --
 
-SELECT ROUND(AVG(estimated_salary),2) AS "estimated salary", 
+SELECT ROUND(AVG(estimated_salary),2) AS estimated salary, 
        CASE 
          WHEN Age BETWEEN 18 AND 40 THEN '18-40'
          WHEN Age BETWEEN 41 AND 60 THEN '41-60'
@@ -134,11 +134,6 @@ FROM customer_churn_records
 WHERE Age BETWEEN 18 AND 100
 GROUP BY age_group;
 
--- No of Male And Female Customers --
-
-SELECT Gender, COUNT(*)
-FROM customer_churn_records
-GROUP BY Gender;
 
 
 
