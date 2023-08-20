@@ -19,7 +19,7 @@ SELECT COUNT(Age),
 FROM customer_churn_records
 GROUP BY 2;
 
--- Average Estiamted Salary In Each Age Group --
+-- Average Estimated Salary In Each Age Group --
 
 CREATE VIEW avg_estimated_salary_per_age_group AS
 SELECT ROUND(AVG(estimated_salary),2) AS estimated_salary, 
