@@ -1,20 +1,40 @@
+-- Demographics --
+
 -- No of clients in each country -- 
 
-SELECT Geography, COUNT(*) AS number_of_clients_in_each_country
+SELECT Geography, COUNT(*) AS "Number Of Clients In Each Country"
 FROM customer_churn_records 
-GROUP BY Geography;
+GROUP BY 1;
 
--- Which country has the highest AVG credit score --
+-- Age Group Count--
 
-SELECT Geography, ROUND(AVG(credit_score),2) AS average_credit_score
+SELECT COUNT(Age), 
+       CASE 
+         WHEN Age BETWEEN 18 AND 40 THEN '18-40'
+         WHEN Age BETWEEN 41 AND 60 THEN '41-60'
+         WHEN Age BETWEEN 61 AND 100 THEN '61-100'
+       END AS age_group
 FROM customer_churn_records
-GROUP BY Geography; 
+GROUP BY 2;
 
--- Which card type is the most popular? --
+-- Average Estiamted Salary In Each Age Group --
 
-SELECT card_type, COUNT(*) AS "Number Of Cards Issued"
+SELECT ROUND(AVG(estimated_salary),2) AS estimated_salary, 
+       CASE 
+         WHEN Age BETWEEN 18 AND 40 THEN '18-40'
+         WHEN Age BETWEEN 41 AND 60 THEN '41-60'
+         WHEN Age BETWEEN 61 AND 100 THEN '61-100'
+       END AS age_group
 FROM customer_churn_records
-GROUP BY card_type; 
+GROUP BY 2;
+
+-- No of Male And Female Customers --
+
+SELECT Gender, COUNT(*)
+FROM customer_churn_records
+GROUP BY 1;
+
+-- Churn --
 
 -- Customers Retained VS No Customers Lost --
 
@@ -25,83 +45,42 @@ WHERE no_longer_a_customer = "no";
 SELECT COUNT(no_longer_a_customer) AS sum_of_Customers
 FROM customer_churn_records;
 
+-- Do More People Drop Off When They Have More Products? --
 
--- Age Groups And Card Type --
-
--- Table For This Data--
-
-CREATE TABLE ages (
-count_age INT, 
-age_group VARCHAR(25)
-) ;
-
-INSERT INTO ages (age_group, count_age) VALUES 
-('18-40','6419'),
-('41-60','3117'),
-('61-100','526'); 
-
-SELECT DISTINCT count_age, age_group
-FROM ages;
-
--- Query--
-
-SELECT card_type, 
-       CASE 
-         WHEN Age BETWEEN 18 AND 40 THEN '18-40'
-         WHEN Age BETWEEN 41 AND 60 THEN '41-60'
-         WHEN Age BETWEEN 61 AND 100 THEN '61-100'
-       END AS age_group,
-       COUNT(*) AS count
+SELECT no_of_products, 	COUNT(no_longer_a_customer) AS "Number Of People That Have Left"
 FROM customer_churn_records
-WHERE card_type IN ("Diamond", "Gold", "Silver", "Platinum")
- AND Age BETWEEN 18 AND 100
-GROUP BY card_type, age_group;
+GROUP BY 1, no_longer_a_customer
+HAVING no_longer_a_customer = "Yes"
+ORDER BY 2 DESC; 
 
 -- Which Country Has A Higher Churn Rate? --
 
-SELECT a.Geography, b.churn_count, a..total_count, (b.churn_count / a.total_count)* 100 AS churn_rate
+SELECT a.Geography, b.churn_count, a.total_count, (b.churn_count / a.total_count)* 100 AS churn_rate
 FROM (
     SELECT Geography, COUNT(*) AS total_count
-    FROM customer_churn_records
-    GROUP BY Geography
+    FROM customer_churn_records 
+    GROUP BY 1
 ) AS a
 JOIN (
     SELECT Geography, COUNT(*) AS churn_count
-    FROM customer_churn_records
+    FROM customer_churn_records 
     WHERE active_member = 'No'
-    GROUP BY Geography
+    GROUP BY 1
 ) AS b
 ON a.Geography = b.Geography;
 
--- Do More People Drop Off When They Have Less Products? --
-
-SELECT no_of_products, COUNT(no_longer_a_customer) AS Number_of_people_that_have_left
-FROM customer_churn_records
-GROUP BY no_of_products, no_longer_a_customer
-HAVING no_longer_a_customer = "Yes"
-ORDER BY COUNT(no_longer_a_customer); 
-
 -- Which Card Type Sees The Most Drop Off? --
 
-SELECT card_type, COUNT(no_longer_a_customer) AS clients_leaving
+SELECT card_type, COUNT(no_longer_a_customer) AS "clients_leaving"
 FROM customer_churn_records
-GROUP BY card_type, no_longer_a_customer
+GROUP BY 1, no_longer_a_customer
 HAVING no_longer_a_customer = "Yes"
-ORDER BY COUNT(no_longer_a_customer);
+ORDER BY 2 DESC;
 
+-- How Many People Have Lodged Complaints For Each Card Type?--
 
--- Average Estimated Salary In Each Age Group --
-
-SELECT ROUND(AVG(estimated_salary),2) AS estimated salary, 
-       CASE 
-         WHEN Age BETWEEN 18 AND 40 THEN '18-40'
-         WHEN Age BETWEEN 41 AND 60 THEN '41-60'
-         WHEN Age BETWEEN 61 AND 100 THEN '61-100'
-       END AS age_group
+SELECT card_type, COUNT(Complain) AS "complaints"
 FROM customer_churn_records
-WHERE Age BETWEEN 18 AND 100
-GROUP BY age_group;
-
-
+GROUP BY 1;
 
 
