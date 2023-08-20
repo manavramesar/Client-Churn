@@ -10,12 +10,6 @@ SELECT Geography, ROUND(AVG(credit_score),2) AS average_credit_score
 FROM customer_churn_records
 GROUP BY Geography; 
 
--- Do men or women have higher AVG credit scores? --
-
-SELECT Gender, ROUND(AVG(credit_score),2) AS average_credit_score"
-FROM customer_churn_records
-GROUP BY Gender; 
-
 -- Which card type is the most popular? --
 
 SELECT card_type, COUNT(*) AS "Number Of Cards Issued"
@@ -95,32 +89,6 @@ GROUP BY card_type, no_longer_a_customer
 HAVING no_longer_a_customer = "Yes"
 ORDER BY COUNT(no_longer_a_customer);
 
--- How Many People Have Lodged Complaints For Each Card Type?--
-
-SELECT card_type, COUNT(Complain) AS complaints
-FROM customer_churn_records
-GROUP BY card_type;
-
--- Which Gender Has  A Higher Average Salary? --
-
-SELECT Gender, ROUND(AVG(estimated_salary),2) AS Average Estimated Salary
-FROM customer_churn_records
-GROUP BY Gender;
-
--- Do people with a lower satisfaction score leave? --
-
-SELECT satisfaction_score, COUNT(no_longer_a_customer) AS count
-FROM customer_churn_records
-WHERE no_longer_a_customer = 'Yes'
-GROUP BY satisfaction_score;
-
--- Does  A Longer Tenure Result In Lower Drop Off?
-
-SELECT Tenure, COUNT(no_longer_a_customer)
-FROM customer_churn_records
-WHERE no_longer_a_customer = "Yes"
-GROUP BY Tenure
-ORDER BY Tenure;
 
 -- Average Estimated Salary In Each Age Group --
 
