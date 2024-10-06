@@ -1,2 +1,1 @@
-In this project, I examined client churn within a banking institution, as well as the demographics that make up their client base. My analytical journey encompassed an array of tasks facilitated by SQL, Excel, and Power BI, 
-fostering a comprehensive understanding of the subject matter. In this repository, you can find the Excel file for both clean and raw data, SQL code, and a short report which includes visualizations. 
+
